@@ -3,6 +3,11 @@ import pepita.*
 
 program juego {
 	game.title("Juego Base")
-	game.addVisual(pepita)
-	game.start()
+	game.cellSize(100)
+	game.addVisual(fondo)
+	game.boardGround("fondo.jpeg")
+	game.height(5)
+	game.width(13)
+	menu.iniciarMenu()
+    game.start()
 }
