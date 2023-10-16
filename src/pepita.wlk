@@ -2,20 +2,58 @@ import wollok.game.*
 
 object napoleon {
 	var comioWhiskas = false
-	var property position = game.at(0,0)
+	var property position = game.at(0,1)
+	//var proyectil bolas de pelo o de fuego
+	
 
 	method image() = "napoleon.png"
-	method saltar(){}
-	method disparar(){}
-	method caer(){}
-	method comerWhiskas(){}
+	method saltar(){
+		position = position.up(1)
+		game.schedule(50,{position = position.up(1)})
+		game.schedule(150,{position = position.down(1)})
+		game.schedule(200,{position = position.down(1)})
+		
+	}
+	method disparar(){
+		//supongo que addVisual del proyectil y hacer que se mueva
+	}
+	
+	method caer(){
+		game.schedule(100,{position = position.down(1)})
+		game.schedule(200,{position = position.up(1)})
+		game.schedule(300,{position = position.up(1)})
+		game.schedule(800,{position = position.down(1)})
+		game.schedule(900,{position = position.down(1)})
+		game.schedule(1000,{position = position.down(1)})
+	}
+	method comerWhiskas(){
+		
+	}
 	
 	
 	method configurarControles(){
 		keyboard.space().onPressDo({ self.saltar()})
-		keyboard.q().onPressDo({ self.disparar()})			
+		keyboard.q().onPressDo({ self.disparar()})	
+		keyboard.c().onPressDo({self.caer()})		
 	}
 }
+
+object whiskas{
+	
+}
+
+object bolaDeFuego{
+	//cuando dispare tiene que aparecer en una position (posicion napoleon)+(1,0) y moverse a la derecha (onTick supongo, hasta que colisione con un enemigo y lo mate, suma puntos)
+}
+object bolaDePelo{
+	//idem bola de fuego, pero deberia hacer menos danio y sumar menos puntos
+}
+
+object espacioEntreTechos{
+	//invisible
+	//cuando napoleon llegue aca, cae y game over
+}
+
 object nivel{
 	method inicializarNivel(){
 		techos.mostrarTechoInicial()
@@ -24,6 +62,7 @@ object nivel{
 	} 
 	method empezarNivel(){
 					napoleon.configurarControles()
+					console.println("hola")
 					techos.generar()
 	}
 	method score(){}
@@ -62,5 +101,6 @@ object menu{
 		game.addVisual(napoleon)
 	//		game.addVisual(fondo)
 		nivel.inicializarNivel()
+		nivel.empezarNivel()
 	}
 }
