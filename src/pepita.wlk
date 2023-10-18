@@ -1,12 +1,12 @@
 import wollok.game.*
 
 object napoleon {
-	var comioWhiskas = false
+	//var comioWhiskas = false creo que no es necesario
 	var property position = game.at(0,1)
-	//var proyectil bolas de pelo o de fuego
+	var proyectil = bolaDePelo
 	
-
 	method image() = "napoleon.png"
+	
 	method saltar(){
 		position = position.up(1)
 		game.schedule(50,{position = position.up(1)})
@@ -14,8 +14,11 @@ object napoleon {
 		game.schedule(200,{position = position.down(1)})
 		
 	}
+	
 	method disparar(){
-		//supongo que addVisual del proyectil y hacer que se mueva
+		game.addVisual(proyectil) 
+		//hacer que aparezca en frente de napoleon 
+		//onTick mover el proyectil a la derecha hasta que colisione con el enemigo
 	}
 	
 	method caer(){
@@ -26,8 +29,9 @@ object napoleon {
 		game.schedule(900,{position = position.down(1)})
 		game.schedule(1000,{position = position.down(1)})
 	}
+	
 	method comerWhiskas(){
-		
+		proyectil = bolaDeFuego
 	}
 	
 	
@@ -42,12 +46,21 @@ object whiskas{
 	
 }
 
-object bolaDeFuego{
-	//cuando dispare tiene que aparecer en una position (posicion napoleon)+(1,0) y moverse a la derecha (onTick supongo, hasta que colisione con un enemigo y lo mate, suma puntos)
+class Proyectil{
+	
+	const image = "bolaDePelo.png"
+	
+	method image() = image
+	
+	method daniar(enemigo){
+		enemigo.recibirDanio()
+	}
+	
 }
-object bolaDePelo{
-	//idem bola de fuego, pero deberia hacer menos danio y sumar menos puntos
-}
+
+const bolaDePelo = new Proyectil()
+
+const bolaDeFuego = new Proyectil(image = "bolaDeFuego.png")
 
 object espacioEntreTechos{
 	//invisible
@@ -99,6 +112,7 @@ object menu{
 	method iniciarJuego(){
 		game.clear()
 		game.addVisual(napoleon)
+
 	//		game.addVisual(fondo)
 		nivel.inicializarNivel()
 		nivel.empezarNivel()
