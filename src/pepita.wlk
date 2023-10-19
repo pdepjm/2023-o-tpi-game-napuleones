@@ -17,7 +17,11 @@ object napoleon {
 	
 	method disparar(){
 		game.addVisual(proyectil) 
-		//hacer que aparezca en frente de napoleon 
+		game.onTick(50,"dispararProyectil",{=>proyectil.mover()})
+		if(proyectil.fueraDePantalla()){
+			game.removeTickEvent("dispararProyectil")
+			game.removeVisual(proyectil)
+		}
 		//onTick mover el proyectil a la derecha hasta que colisione con el enemigo
 	}
 	
@@ -48,13 +52,21 @@ object whiskas{
 
 class Proyectil{
 	
-	const image = "bolaDePelo.png"
+	var property position = game.at(1,1)
+		
+	const image = "pepita.png"
 	
 	method image() = image
 	
 	method daniar(enemigo){
 		enemigo.recibirDanio()
 	}
+	
+	method mover(){
+		self.position(game.at(position.x()+1,position.y()))
+	}
+	
+	//method fueraDePantalla() = self.position() == borde pantalla
 	
 }
 
