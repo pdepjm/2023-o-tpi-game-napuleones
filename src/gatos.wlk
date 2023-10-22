@@ -5,23 +5,27 @@ object napoleon {
 	//var comioWhiskas = false creo que no es necesario
 	var property position = game.at(0,1)
 	var proyectilesLanzados = 0
+	var puedeSaltar = true
+	var property puedeDisparar = true
 	//var proyectil = bolaDePelo
 	
-	method image() = "napoleon.png"
+	method image() = "gato.gif"
 	
 	method saltar(){
+		puedeSaltar = false
 		position = position.up(1)
 		game.schedule(50,{position = position.up(1)})
 		game.schedule(150,{position = position.down(1)})
-		game.schedule(200,{position = position.down(1)})
-		
+		game.schedule(200,{position = position.down(1) puedeSaltar = true})
 	}
 	
 	method disparar(){
+		puedeDisparar = false
 		proyectilesLanzados++
 		const p = new Proyectil(identificador=proyectilesLanzados)
 		game.addVisual(p) 
 		p.iniciar()
+		game.onCollideDo(self, {colision=>console.println("adasd")})	
 //		game.onTick(50,"dispararProyectil",{=>p.mover()})
 //		if(p.fueraDePantalla()){
 //			game.removeTickEvent("dispararProyectil")
@@ -47,8 +51,8 @@ object napoleon {
 	
 	
 	method configurarControles(){
-		keyboard.space().onPressDo({ self.saltar()})
-		keyboard.q().onPressDo({ self.disparar()})	
-		keyboard.c().onPressDo({self.caer()})		
+		keyboard.space().onPressDo({if (puedeSaltar) self.saltar()})
+		keyboard.q().onPressDo({if (puedeDisparar) self.disparar()})	
+		keyboard.c().onPressDo({ self.caer()})
 	}
 }

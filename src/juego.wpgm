@@ -6,7 +6,7 @@ program juego {
 	game.title("Juego Base")
 	game.cellSize(100)
 	game.addVisual(fondo)
-	game.boardGround("fondoCiudad.jpeg")
+	game.boardGround("fondo.png")
 	game.height(5)
 	game.width(13)
 	menu.iniciarMenu()

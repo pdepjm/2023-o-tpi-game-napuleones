@@ -1,5 +1,5 @@
 import wollok.game.*
-import gato.*
+import gatos.*
 import techos.*
 
 object espacioEntreTechos{
@@ -20,11 +20,12 @@ object techos{
 	var contadorTechos = 0
 	var techoAnterior 
 	method tamanioRandom(){
-		return 8 //por ahora
+		return 2 //por ahora
 	}
 	method generarTechos(){
 		contadorTechos++
-		const nuevoTecho = new Techo (position = techoAnterior.position().right(1+techoAnterior.tamanio()), identificador = contadorTechos, tamanio = self.tamanioRandom())
+		//const nuevoTecho = new Techo (position = techoAnterior.position().right(1+techoAnterior.tamanio()), identificador = contadorTechos, tamanio = self.tamanioRandom())
+		const nuevoTecho = new Techo (position = game.at(13,0), identificador = contadorTechos, tamanio = self.tamanioRandom())
 		techoAnterior = nuevoTecho
 		game.addVisual(nuevoTecho)
 		nuevoTecho.iniciar()
@@ -35,7 +36,7 @@ object techos{
 		techoAnterior = primerTecho
 		game.addVisual(primerTecho)
 		primerTecho.iniciar()
-		game.onTick(500,"generarTechos",{=>self.generarTechos()})
+		game.onTick(300,"generarTechos",{=>self.generarTechos()})
 	}
 	
 	}

@@ -1,16 +1,16 @@
 import wollok.game.*
 import nivel.*
-import gato.*
+import gatos.*
 
 object menu{
 	var estaEnInstrucciones = false
 	method iniciarMenu(){
-		fondo.fondoActual("instrucciones.jpeg")
+		fondo.fondoActual("menu.png")
 		keyboard.space().onPressDo({self.continuar()})
 	}
 	
 	method mostrarInstrucciones(){
-		fondo.fondoActual("menu.jpeg")
+		fondo.fondoActual("instrucciones.png")
 	}
 	method continuar(){
 		if (!estaEnInstrucciones){

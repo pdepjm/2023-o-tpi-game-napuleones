@@ -1,5 +1,5 @@
 import wollok.game.*
-import gato.*
+import gatos.*
 
 class Proyectil{
 	const identificador
@@ -18,7 +18,8 @@ class Proyectil{
 		game.onTick(25,"dispararProyectil"+identificador.toString(),{=>self.mover()
 			if(self.fueraDePantalla()){
 			game.removeTickEvent("dispararProyectil"+identificador.toString())
-			//console.println("se removio: dispararProyectil"+identificador.toString())
+			console.println("se removio: dispararProyectil"+identificador.toString())
+			napoleon.puedeDisparar(true)
 			game.removeVisual(self)
 			
 		}
@@ -28,7 +29,7 @@ class Proyectil{
 		self.position(game.at(position.x()+1,position.y()))
 	}
 	
-	method fueraDePantalla() = position ==game.at(13,position.y()) //borde pantalla
+	method fueraDePantalla() = position ==game.at(14,position.y()) //borde pantalla
 	
 }
 

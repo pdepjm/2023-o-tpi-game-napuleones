@@ -1,4 +1,5 @@
 import wollok.game.*
+import gatos.*
 
 
 class Techo{
@@ -10,10 +11,11 @@ class Techo{
 	method fueraDePantalla() = position == game.at(-tamanio,position.y())
 	method iniciar(){
 		game.addVisual(colision)
-		game.onTick(50,"moverTecho"+identificador.toString(),{=>self.mover()
+		game.onTick(100,"moverTecho"+identificador.toString(),{=>self.mover()
+			if(napoleon.position()==colision.position()){game.clear()}
 			if(self.fueraDePantalla()){
 			game.removeTickEvent("moverTecho"+identificador.toString())
-			//console.println("se removio: moverTecho"+identificador.toString())
+			console.println("se removio: moverTecho"+identificador.toString())
 			game.removeVisual(colision)
 			game.removeVisual(self)
 			
@@ -27,6 +29,5 @@ class Techo{
 }
 class ColisionCaida{
 	var property position
-	method imagen() = "pepita.png"//para ver
-	
+	method image() = "nada.png"//para ver
 }
