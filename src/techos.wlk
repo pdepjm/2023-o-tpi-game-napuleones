@@ -9,7 +9,7 @@ class Techo{
 	var property position
 	const colision = new ColisionCaida(position=self.position().right(tamanio).up(1))//pone el objecto arriba a la derecha
 	method image() = "techo"+tamanio.toString()+".png"
-	method fueraDePantallaAIzquierda() = position == game.at(-tamanio-1,position.y())
+	method fueraDePantallaAIzquierda() = position == game.at(-tamanio-2,position.y())
 	method estaCompletamenteEnPantalla() = position.x()+tamanio < 13
 	method remover(){
 			game.removeTickEvent("moverTecho"+identificador.toString())
