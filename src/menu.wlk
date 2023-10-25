@@ -23,6 +23,7 @@ object menu{
 	method iniciarJuego(){
 		game.clear()
 		game.addVisual(napoleon)
+		game.addVisual(score)
 
 	//		game.addVisual(fondo)
 		nivel.empezarNivel()

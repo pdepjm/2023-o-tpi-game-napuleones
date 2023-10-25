@@ -1,6 +1,7 @@
 import wollok.game.*
 import gatos.*
-
+import menu.*
+import nivel.*
 
 class Techo{
 	const property tamanio
@@ -8,17 +9,23 @@ class Techo{
 	var property position
 	const colision = new ColisionCaida(position=self.position().right(tamanio).up(1))//pone el objecto arriba a la derecha
 	method image() = "techo"+tamanio.toString()+".png"
-	method fueraDePantalla() = position == game.at(-tamanio,position.y())
-	method iniciar(){
-		game.addVisual(colision)
-		game.onTick(100,"moverTecho"+identificador.toString(),{=>self.mover()
-			if(napoleon.position()==colision.position()){game.clear()}
-			if(self.fueraDePantalla()){
+	method fueraDePantallaAIzquierda() = position == game.at(-tamanio-1,position.y())
+	method estaCompletamenteEnPantalla() = position.x()+tamanio < 13
+	method remover(){
 			game.removeTickEvent("moverTecho"+identificador.toString())
-			console.println("se removio: moverTecho"+identificador.toString())
+			techos.removerTechoEspecifico(self)
 			game.removeVisual(colision)
 			game.removeVisual(self)
-			
+	}
+	method parar(){
+			game.removeTickEvent("moverTecho"+identificador.toString())
+	}
+	method iniciar(){
+	    game.addVisual(colision)
+		game.onTick(100,"moverTecho"+identificador.toString(),{=>
+			self.mover()
+			if(self.fueraDePantallaAIzquierda()){
+				self.remover()
 		}
 		})
 	}
@@ -29,5 +36,7 @@ class Techo{
 }
 class ColisionCaida{
 	var property position
-	method image() = "nada.png"//para ver
+	method chocaCon(gato){
+		gato.caer()
+	}
 }
