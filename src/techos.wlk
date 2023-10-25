@@ -2,41 +2,73 @@ import wollok.game.*
 import gatos.*
 import menu.*
 import nivel.*
+import powerups.*
 
-class Techo{
+class Techo {
+
 	const property tamanio
 	const identificador
 	var property position
-	const colision = new ColisionCaida(position=self.position().right(tamanio).up(1))//pone el objecto arriba a la derecha
-	method image() = "techo"+tamanio.toString()+".png"
-	method fueraDePantallaAIzquierda() = position == game.at(-tamanio-2,position.y())
-	method estaCompletamenteEnPantalla() = position.x()+tamanio < 13
-	method remover(){
-			game.removeTickEvent("moverTecho"+identificador.toString())
-			techos.removerTechoEspecifico(self)
-			game.removeVisual(colision)
-			game.removeVisual(self)
+	const colision = new ColisionCaida(position = self.position().right(tamanio).up(1)) // pone el objecto arriba a la derecha
+	const objetoAnidado = self.generarObjeto()
+	method image() = "techo" + tamanio.toString() + ".png"
+
+	method fueraDePantallaAIzquierda() = position == game.at(-tamanio - 1, position.y())
+
+	method estaCompletamenteEnPantalla() = position.x() + tamanio < 13
+	
+	method generarObjeto(){
+		//const listaPosibilidades = [Nada, Nada, Whiskas]
+		const numeroRandom = 0.randomUpTo(10).truncate(0)
+		if (numeroRandom==5){
+			console.println("asd")
+			return  new PowerUp(tamanioTecho = tamanio, posicionTecho = position)
+		}else if(numeroRandom==4){
+			return new GatoEnemigo(tamanioTecho = tamanio, posicionTecho = position)
+		}else return new Nada(position =game.center())
+		//return  new seleccionado
+		
 	}
-	method parar(){
-			game.removeTickEvent("moverTecho"+identificador.toString())
+	
+	method remover() {
+		game.removeTickEvent("moverTecho" + identificador.toString())
+		techos.removerTechoEspecifico(self)
+		game.removeVisual(colision)
+		game.removeVisual(objetoAnidado)
+		game.removeVisual(self)
 	}
-	method iniciar(){
-	    game.addVisual(colision)
-		game.onTick(100,"moverTecho"+identificador.toString(),{=>
+	method chocaCon(){}
+	method parar() {
+		game.removeTickEvent("moverTecho" + identificador.toString())
+	}
+
+	method iniciar() {
+		game.addVisual(colision)
+		self.generarObjeto()
+		game.addVisual(objetoAnidado)
+		game.onTick(100, "moverTecho" + identificador.toString(), {=>
 			self.mover()
-			if(self.fueraDePantallaAIzquierda()){
+			if (self.fueraDePantallaAIzquierda()) {
 				self.remover()
-		}
+			}
 		})
 	}
-	method mover(){
-		position=self.position().left(1)
+
+	method mover() {
+		position = self.position().left(1)
 		colision.position(colision.position().left(1))
+		objetoAnidado.position(objetoAnidado.position().left(1))
 	}
+
 }
-class ColisionCaida{
+
+class ColisionCaida {
+
 	var property position
-	method chocaCon(gato){
+	//method image() = "pepita.png"
+	method chocaCon(gato) {
 		gato.caer()
 	}
+
 }
+

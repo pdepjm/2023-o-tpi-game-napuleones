@@ -5,7 +5,9 @@ import gatos.*
 object menu{
 	var estaEnInstrucciones = false
 	method iniciarMenu(){
+		fondo.position(game.origin())
 		fondo.fondoActual("menu.png")
+		estaEnInstrucciones = false
 		keyboard.space().onPressDo({self.continuar()})
 	}
 	

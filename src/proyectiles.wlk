@@ -7,10 +7,8 @@ class Proyectil {
 	var property position = napoleon.position().right(1)
 	// si agregamos mas gatos o q los gatos enemigos disparen entonces tenemos q agregar
 	// un atributo que identifique quien dispara el proyectil para hacerlo generico y no solo para napoleon
-	const image = "boladepelo.png"
-
-	method image() = image
-
+	var property image 
+	
 	method daniar(enemigo) {
 		enemigo.recibirDanio(20)
 	}
