@@ -69,7 +69,6 @@ object napoleon {
 	method configurarControles(){
 		keyboard.space().onPressDo({if (puedeSaltar) self.saltar()})
 		keyboard.q().onPressDo({if (puedeDisparar) self.disparar()})	
-		keyboard.c().onPressDo({ self.caer()})
 		self.colisiones()
 		self.caminar()
 	}
