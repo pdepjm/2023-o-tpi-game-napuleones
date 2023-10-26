@@ -1,5 +1,6 @@
 import wollok.game.*
 import gatos.*
+import nivel.*
 
 class Proyectil {
 
@@ -15,12 +16,12 @@ class Proyectil {
 
 	method remover() {
 		game.removeTickEvent("dispararProyectil" + identificador.toString())
-		console.println("se removio: dispararProyectil" + identificador.toString())
 		napoleon.puedeDisparar(true)
 		game.removeVisual(self)
 	}
 
 	method iniciar() {
+		game.onCollideDo(self, {obstaculo=>obstaculo.explotar()})
 		game.onTick(25, "dispararProyectil" + identificador.toString(), {=>
 			self.mover()
 			if (self.fueraDePantalla()) {

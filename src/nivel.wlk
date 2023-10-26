@@ -17,8 +17,8 @@ object nivel {
 		score.position(game.center())
 		score.parar()
 		game.addVisual(fondo)
-		fondo.fondoActual("gameOver.png")
-		fondo.position(game.center())
+		fondo.fondoActual("gameover.png")
+		fondo.position(game.at(5,3))
 	}
 	method reiniciarNivel(){
 		keyboard.space().onPressDo({ if (puedeReiniciarse) menu.iniciarMenu()})
@@ -32,7 +32,7 @@ object techos {
 	const listaTechos = #{}
 
 	method tamanioRandom() {
-		return 4.randomUpTo(7).truncate(0)
+		return 5.randomUpTo(8).truncate(0)
 	}
 
 	method removerBasura() {
@@ -56,6 +56,7 @@ object techos {
 		const primerTecho = new Techo(position = game.origin(), identificador = 1, tamanio = 13) // que ocupe toda la pantalla
 		contadorTechos++
 		techoAnterior = primerTecho
+		listaTechos.add(primerTecho)
 		game.addVisual(primerTecho)
 		primerTecho.iniciar()
 		game.onTick(1, "generarTechos", {=>
@@ -77,7 +78,7 @@ object techos {
 object score {
 
 	var property score = 0
-	var property position = game.at(0, 4)
+	var property position = game.at(6, 4)
 
 	method text() = "Score: " + score.toString()
 
@@ -90,7 +91,7 @@ object score {
 
 	method iniciar() {
 		score = 0
-		position = game.at(0, 4)
+		position = game.at(6, 4)
 		game.onTick(150, "sumar", {=> score++})
 	}
 
@@ -100,7 +101,7 @@ object fondo {
 
 	var property fondoActual = "menu.jpeg"
 	var property position = game.origin()
-
+	method chocaCon(a){}
 	method image() = fondoActual
 
 }

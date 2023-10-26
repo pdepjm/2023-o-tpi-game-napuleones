@@ -1,10 +1,13 @@
 import wollok.game.*
 import proyectiles.*
 import nivel.*
+import inventario.*
+import powerups.*
 
 object napoleon {
 
 	// var comioWhiskas = false creo que no es necesario
+	var muerto = false
 	var property position = game.at(0, 1)
 	var property image = "caminar3.png"
 	var proyectilesLanzados = 0
@@ -12,9 +15,12 @@ object napoleon {
 	var property puedeConsumirPowerUp = true
 	var puedeSaltar = true
 	var property puedeDisparar = true
-	var fotogramaCaminar = 1
+	var fotogramaCaminar = 0
 	const listaProyectiles = #{}
-	const inventario = []
+	const property inventario = []
+	var property framesDeCaminar = ["caminar1.png","caminar2.png","caminar3.png"]
+	var property framesDeSaltar = ["salto1.png","salto2.png","salto3.png"]
+	var property gatoGrande = false
 	// var proyectil = bolaDePelo
 	method removerProyectilesBasura() {
 		listaProyectiles.forEach{ proyectil => proyectil.remover()}
@@ -23,10 +29,10 @@ object napoleon {
 	method caminar() {
 		game.onTick(100, "caminar", {=>
 			if (puedeSaltar) {
-				if (fotogramaCaminar > 3) {
-					fotogramaCaminar = 1
+				if (fotogramaCaminar > framesDeCaminar.size()-1) {
+					fotogramaCaminar = 0
 				}
-				self.image("caminar" + fotogramaCaminar.toString() + ".png")
+				self.image(framesDeCaminar.get(fotogramaCaminar))
 				fotogramaCaminar++
 			}
 		})
@@ -41,19 +47,19 @@ object napoleon {
 		puedeSaltar = false
 		position = position.up(1)
 		game.schedule(50, { position = position.up(1)
-			self.image("salto1.png")
+			self.image(framesDeSaltar.get(0))
 		})
 		game.schedule(150, { position = position.down(1)
-			self.image("salto2.png")
+			self.image(framesDeSaltar.get(1))
 		})
 		game.schedule(250, { position = position.down(1)
-			self.image("salto3.png")
+			self.image(framesDeSaltar.get(2))
 		})
 		game.schedule(260, { puedeSaltar = true})
 	}
 
 	method colisiones() {
-		game.onCollideDo(self, { obstaculo => obstaculo.chocaCon(self)})
+		game.onCollideDo(self, { obstaculo => if(!muerto){obstaculo.chocaCon(self)}})
 	}
 
 	method disparar() {
@@ -66,6 +72,7 @@ object napoleon {
 	}
 
 	method caer() {
+		muerto = true
 		puedeSaltar = false
 		puedeDisparar = false
 		puedeConsumirPowerUp = false
@@ -94,19 +101,27 @@ object napoleon {
 	}
 	method consumirPowerUp(slot){
 		if(!inventario.isEmpty()){
+			puedeConsumirPowerUp = false
 			inventario.get(slot-1).usar(self)
 			inventario.remove(inventario.get(slot-1))
 		}
 	}
 	method configurarControles() {
+		muerto = false
 		image = "caminar3.png"
+		proyectilesActuales = "boladepelo"
 		puedeConsumirPowerUp = true
-		position = game.at(0, 1)
+		position = game.at(1, 1)
 		puedeSaltar = true
 		puedeDisparar = true
-		fotogramaCaminar = 1
+		fotogramaCaminar = 0
 		listaProyectiles.clear()
 		inventario.clear()
+		gatoGrande = false
+	    framesDeCaminar = ["caminar1.png","caminar2.png","caminar3.png"]
+	    framesDeSaltar = ["salto1.png","salto2.png","salto3.png"]
+		//3.times({ i =>inventario.add(whiskas) })
+		//3.times({inventario.add(invisible)})
 		keyboard.space().onPressDo({ if (puedeSaltar) self.saltar()
 		})
 		keyboard.num1().onPressDo({ if (puedeConsumirPowerUp) self.consumirPowerUp(1)
@@ -122,4 +137,3 @@ object napoleon {
 	}
 
 }
-

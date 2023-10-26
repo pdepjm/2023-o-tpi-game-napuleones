@@ -21,7 +21,6 @@ class Techo {
 		//const listaPosibilidades = [Nada, Nada, Whiskas]
 		const numeroRandom = 0.randomUpTo(10).truncate(0)
 		if (numeroRandom==5){
-			console.println("asd")
 			return  new PowerUp(tamanioTecho = tamanio, posicionTecho = position)
 		}else if(numeroRandom==4){
 			return new GatoEnemigo(tamanioTecho = tamanio, posicionTecho = position)
@@ -37,7 +36,7 @@ class Techo {
 		game.removeVisual(objetoAnidado)
 		game.removeVisual(self)
 	}
-	method chocaCon(){}
+	method chocaCon(a){}
 	method parar() {
 		game.removeTickEvent("moverTecho" + identificador.toString())
 	}
@@ -46,11 +45,11 @@ class Techo {
 		game.addVisual(colision)
 		self.generarObjeto()
 		game.addVisual(objetoAnidado)
-		game.onTick(100, "moverTecho" + identificador.toString(), {=>
-			self.mover()
+		game.onTick(120, "moverTecho" + identificador.toString(), {=>
 			if (self.fueraDePantallaAIzquierda()) {
 				self.remover()
 			}
+			self.mover()
 		})
 	}
 
@@ -67,8 +66,9 @@ class ColisionCaida {
 	var property position
 	//method image() = "pepita.png"
 	method chocaCon(gato) {
-		gato.caer()
+		if(!gato.gatoGrande()) gato.caer()
 	}
-
+	method explotar(){
+	}
 }
 

@@ -1,6 +1,7 @@
 import wollok.game.*
 import nivel.*
 import gatos.*
+import inventario.*
 
 object menu{
 	var estaEnInstrucciones = false
@@ -26,6 +27,8 @@ object menu{
 		game.clear()
 		game.addVisual(napoleon)
 		game.addVisual(score)
+		game.addVisual(inventarioUI)
+		inventarioUI.iniciar()
 
 	//		game.addVisual(fondo)
 		nivel.empezarNivel()
