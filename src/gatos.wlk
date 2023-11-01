@@ -11,7 +11,7 @@ object napoleon {
 	var property position = game.at(0, 1)
 	var property image = "caminar3.png"
 	var proyectilesLanzados = 0
-	var property proyectilesActuales = "boladepelo"
+	var property proyectilesActuales = bolaDePelo
 	var property puedeConsumirPowerUp = true
 	var puedeSaltar = true
 	var property puedeDisparar = true
@@ -46,16 +46,16 @@ object napoleon {
 	method saltar() {
 		puedeSaltar = false
 		position = position.up(1)
-		game.schedule(50, { position = position.up(1)
+		game.schedule(50, {if (!muerto) position = position.up(1)
 			self.image(framesDeSaltar.get(0))
 		})
-		game.schedule(150, { position = position.down(1)
+		game.schedule(150, { if (!muerto)position = position.down(1)
 			self.image(framesDeSaltar.get(1))
 		})
-		game.schedule(250, { position = position.down(1)
+		game.schedule(250, {if (!muerto) position = position.down(1)
 			self.image(framesDeSaltar.get(2))
 		})
-		game.schedule(260, { puedeSaltar = true})
+		game.schedule(260, {if (!muerto) puedeSaltar = true})
 	}
 
 	method colisiones() {
@@ -65,7 +65,7 @@ object napoleon {
 	method disparar() {
 		puedeDisparar = false
 		proyectilesLanzados++
-		const nuevoProyectil = new Proyectil(identificador = proyectilesLanzados, image = proyectilesActuales+".png")
+		const nuevoProyectil = new Proyectil(identificador = proyectilesLanzados, tipoProjectil = proyectilesActuales)
 		listaProyectiles.add(nuevoProyectil)
 		game.addVisual(nuevoProyectil)
 		nuevoProyectil.iniciar()
@@ -109,7 +109,7 @@ object napoleon {
 	method configurarControles() {
 		muerto = false
 		image = "caminar3.png"
-		proyectilesActuales = "boladepelo"
+		proyectilesActuales = bolaDePelo
 		puedeConsumirPowerUp = true
 		position = game.at(1, 1)
 		puedeSaltar = true
@@ -130,7 +130,7 @@ object napoleon {
 		})
 		keyboard.num3().onPressDo({ if (puedeConsumirPowerUp) self.consumirPowerUp(3)
 		})
-		keyboard.q().onPressDo({ if (puedeDisparar) self.disparar()
+		keyboard.q().onPressDo({ if (puedeDisparar and !muerto) self.disparar()
 		})
 		self.colisiones()
 		self.caminar()

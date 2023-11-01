@@ -1,5 +1,6 @@
 import wollok.game.*
 import nivel.*
+import proyectiles.*
 object powerUps{
 	const property powerUpsActuales = [whiskas, croqueta]
 }
@@ -13,7 +14,7 @@ class PowerUp {
 		self.image("estrellas.png")
 		gato.agregarAInventario(tipo)
 	}
-	method explotar(){
+	method explotar(tipoProjectil){
 	}
 	method definirTipo(){
 		return powerUps.powerUpsActuales().get(0.randomUpTo(2).truncate(0))
@@ -24,7 +25,7 @@ class Nada {
 	var property position
 	method chocaCon(gato){}
 	method definirTipo(){}
-	method explotar(){
+	method explotar(tipoProjectil){
 	}
 	//method image() = "pepita.png"
 	
@@ -32,8 +33,8 @@ class Nada {
 object whiskas {
 	method image() = "whiskas.png"
 	method usar(gato){
-		gato.proyectilesActuales("boladefuego")
-		game.schedule(5000,{gato.proyectilesActuales("boladepelo") gato.puedeConsumirPowerUp(true)})
+		gato.proyectilesActuales(bolaDeFuego)
+		game.schedule(5000,{gato.proyectilesActuales(bolaDePelo) gato.puedeConsumirPowerUp(true)})
 	}
 	
 }
@@ -61,12 +62,12 @@ class GatoEnemigo {
 	var puedeDaniar = true
 	var property position = game.at((posicionTecho.x()+2).randomUpTo(posicionTecho.x()+tamanioTecho-2).truncate(0), 1)
 	method chocaCon(gato){
-		if (puedeDaniar and !gato.gatoGrande()){gato.caer()}else self.explotar()
+		if (puedeDaniar and !gato.gatoGrande()){gato.caer()}else self.explotar(bolaDePelo)
 	}
-	method explotar(){
+	method explotar(tipoProjectil){
 		puedeDaniar = false
-		score.score(score.score()+100)
-		self.image("estrellas.png") //explosion
+		tipoProjectil.sumarPuntos()
+		self.image("estrellas.png")
 	}
 	method definirTipo(){
 		return "enemigo" + 1.randomUpTo(4).truncate(0).toString()

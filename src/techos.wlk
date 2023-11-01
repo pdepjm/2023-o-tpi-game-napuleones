@@ -68,7 +68,7 @@ class ColisionCaida {
 	method chocaCon(gato) {
 		if(!gato.gatoGrande()) gato.caer()
 	}
-	method explotar(){
+	method explotar(tipoProjectil){
 	}
 }
 
