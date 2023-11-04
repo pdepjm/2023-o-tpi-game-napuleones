@@ -3,34 +3,39 @@ import nivel.*
 import gatos.*
 import inventario.*
 
-object menu{
+object menu {
+
 	var estaEnInstrucciones = false
-	method iniciarMenu(){
+
+	method iniciarMenu() {
 		fondo.position(game.origin())
 		fondo.fondoActual("menu.png")
 		estaEnInstrucciones = false
-		keyboard.space().onPressDo({self.continuar()})
+		keyboard.space().onPressDo({ self.continuar()})
 	}
-	
-	method mostrarInstrucciones(){
+
+	method mostrarInstrucciones() {
 		fondo.fondoActual("instrucciones.png")
 	}
-	method continuar(){
-		if (!estaEnInstrucciones){
+
+	method continuar() {
+		game.sound("boton.wav").play()
+		if (!estaEnInstrucciones) {
 			self.mostrarInstrucciones()
 			estaEnInstrucciones = true
-		}else {
+		} else {
 			self.iniciarJuego()
 		}
 	}
-	method iniciarJuego(){
+
+	method iniciarJuego() {
 		game.clear()
 		game.addVisual(napoleon)
 		game.addVisual(score)
 		game.addVisual(inventarioUI)
 		inventarioUI.iniciar()
-
-	//		game.addVisual(fondo)
 		nivel.empezarNivel()
 	}
+
 }
+

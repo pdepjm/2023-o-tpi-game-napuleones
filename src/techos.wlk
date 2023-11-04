@@ -2,15 +2,15 @@ import wollok.game.*
 import gatos.*
 import menu.*
 import nivel.*
-import powerups.*
+import spawns.*
 
 class Techo {
 
 	const property tamanio
 	const identificador
 	var property position
-	const colision = new ColisionCaida(position = self.position().right(tamanio).up(1)) // pone el objecto arriba a la derecha
-	const objetoAnidado = self.generarObjeto()
+	const colision = new ColisionCaida(position = self.position().right(tamanio).up(1)) 
+	const objetoAnidado = if (identificador != 1) self.generarObjeto() else new Nada(position =game.center())
 	method image() = "techo" + tamanio.toString() + ".png"
 
 	method fueraDePantallaAIzquierda() = position == game.at(-tamanio - 1, position.y())
@@ -18,14 +18,12 @@ class Techo {
 	method estaCompletamenteEnPantalla() = position.x() + tamanio < 13
 	
 	method generarObjeto(){
-		//const listaPosibilidades = [Nada, Nada, Whiskas]
-		const numeroRandom = 0.randomUpTo(10).truncate(0)
+		const numeroRandom = 0.randomUpTo(7).truncate(0)
 		if (numeroRandom==5){
 			return  new PowerUp(tamanioTecho = tamanio, posicionTecho = position)
 		}else if(numeroRandom==4){
 			return new GatoEnemigo(tamanioTecho = tamanio, posicionTecho = position)
 		}else return new Nada(position =game.center())
-		//return  new seleccionado
 		
 	}
 	
@@ -43,8 +41,8 @@ class Techo {
 
 	method iniciar() {
 		game.addVisual(colision)
-		self.generarObjeto()
 		game.addVisual(objetoAnidado)
+		objetoAnidado.reproducirSonidoAlAparecer()
 		game.onTick(120, "moverTecho" + identificador.toString(), {=>
 			if (self.fueraDePantallaAIzquierda()) {
 				self.remover()
@@ -64,7 +62,6 @@ class Techo {
 class ColisionCaida {
 
 	var property position
-	//method image() = "pepita.png"
 	method chocaCon(gato) {
 		if(!gato.gatoGrande()) gato.caer()
 	}

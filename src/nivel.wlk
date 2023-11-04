@@ -4,7 +4,9 @@ import techos.*
 import menu.*
 
 object nivel {
+
 	var puedeReiniciarse = false
+
 	method empezarNivel() {
 		puedeReiniciarse = false
 		napoleon.configurarControles()
@@ -18,11 +20,14 @@ object nivel {
 		score.parar()
 		game.addVisual(fondo)
 		fondo.fondoActual("gameover.png")
-		fondo.position(game.at(5,3))
+		fondo.position(game.at(5, 3))
 	}
-	method reiniciarNivel(){
-		keyboard.space().onPressDo({ if (puedeReiniciarse) menu.iniciarMenu()})
+
+	method reiniciarNivel() {
+		keyboard.space().onPressDo({ game.sound("boton.wav").play() if (puedeReiniciarse) menu.iniciarJuego()
+		})
 	}
+
 }
 
 object techos {
@@ -53,7 +58,7 @@ object techos {
 	}
 
 	method iniciar() {
-		const primerTecho = new Techo(position = game.origin(), identificador = 1, tamanio = 13) // que ocupe toda la pantalla
+		const primerTecho = new Techo(position = game.origin(), identificador = 1, tamanio = 13)
 		contadorTechos++
 		techoAnterior = primerTecho
 		listaTechos.add(primerTecho)
@@ -87,8 +92,7 @@ object score {
 	method parar() {
 		game.removeTickEvent("sumar")
 	}
-
-
+	method explotar(){}
 	method iniciar() {
 		score = 0
 		position = game.at(6, 4)
@@ -101,7 +105,10 @@ object fondo {
 
 	var property fondoActual = "menu.jpeg"
 	var property position = game.origin()
-	method chocaCon(a){}
+
+	method chocaCon(a) {
+	}
+
 	method image() = fondoActual
 
 }
