@@ -3,7 +3,7 @@ import menu.*
 import nivel.*
 
 program juego {
-	game.title("Juego Base")
+	game.title("Fur Runner")
 	game.cellSize(100)
 	game.addVisual(fondo)
 	game.boardGround("fondo.png")

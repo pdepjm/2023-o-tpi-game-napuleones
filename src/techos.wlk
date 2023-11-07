@@ -18,7 +18,7 @@ class Techo {
 	method estaCompletamenteEnPantalla() = position.x() + tamanio < 13
 	
 	method generarObjeto(){
-		const numeroRandom = 0.randomUpTo(7).truncate(0)
+		const numeroRandom = 0.randomUpTo(6).truncate(0)
 		if (numeroRandom==5){
 			return  new PowerUp(tamanioTecho = tamanio, posicionTecho = position)
 		}else if(numeroRandom==4){

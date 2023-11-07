@@ -7,6 +7,7 @@ import spawns.*
 object napoleon {
 
 	var muerto = false
+	var volando = false
 	var property position = game.at(0, 1)
 	var property image = "caminar3.png"
 	var proyectilesLanzados = 0
@@ -26,7 +27,7 @@ object napoleon {
 
 	method caminar() {
 		game.onTick(100, "caminar", {=>
-			if (puedeSaltar) {
+			if (puedeSaltar and !volando) {
 				if (fotogramaCaminar > framesDeCaminar.size() - 1) {
 					fotogramaCaminar = 0
 				}
@@ -77,7 +78,30 @@ object napoleon {
 		game.addVisual(nuevoProyectil)
 		nuevoProyectil.iniciar()
 	}
-
+	
+	method volar(){
+		puedeSaltar = false
+		volando = true
+		const sonidoSaltar = game.sound("saltar.wav")
+		sonidoSaltar.shouldLoop(false)
+		sonidoSaltar.play()
+		self.image(framesDeSaltar.get(0))
+		game.schedule(50, {  position = position.up(1)
+			self.image(framesDeSaltar.get(1))
+		})
+		
+	}
+	method dejarDeVolar(){
+		const sonidoSaltar = game.sound("saltar.wav")
+		sonidoSaltar.shouldLoop(false)
+		sonidoSaltar.play()
+		game.schedule(50, {  position = position.down(1)
+			self.image(framesDeSaltar.get(2))
+				volando = false
+					puedeSaltar = true
+					self.puedeConsumirPowerUp(true)
+			})
+	}
 	method caer() {
 		muerto = true
 		puedeSaltar = false
@@ -113,7 +137,7 @@ object napoleon {
 	}
 
 	method consumirPowerUp(slot) {
-		if (!inventario.isEmpty()) {
+		if (inventario.size()>=slot) {
 			puedeConsumirPowerUp = false
 			game.sound("consumirpowerup.wav").play()
 			inventario.get(slot - 1).usar(self)
@@ -129,13 +153,14 @@ object napoleon {
 		position = game.at(1, 1)
 		puedeSaltar = true
 		puedeDisparar = true
+		volando = false
 		fotogramaCaminar = 0
 		listaProyectiles.clear()
 		inventario.clear()
 		gatoGrande = false
 		framesDeCaminar = [ "caminar1.png", "caminar2.png", "caminar3.png" ]
 		framesDeSaltar = [ "salto1.png", "salto2.png", "salto3.png" ]
-		keyboard.space().onPressDo({ if (puedeSaltar) self.saltar()
+		keyboard.space().onPressDo({ if (puedeSaltar and !volando) self.saltar()
 		})
 		keyboard.num1().onPressDo({ if (puedeConsumirPowerUp) self.consumirPowerUp(1)
 		})

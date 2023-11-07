@@ -63,8 +63,9 @@ object lasagna{
 	method image() = "lasagna.png"
 
 	method usar(gato) {
+		gato.volar()
 		game.schedule(5000, {
-			gato.puedeConsumirPowerUp(true)
+			gato.dejarDeVolar()
 		})
 	}
 }
