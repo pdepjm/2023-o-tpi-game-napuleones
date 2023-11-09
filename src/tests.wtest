@@ -1,6 +1,55 @@
+import gatos.*
+import inventario.*
+import menu.*
+import nivel.*
+import proyectiles.*
+import spawns.*
+import techos.*
+import wollok.game.*
 
-test "testX" {
+describe "Test de posiciones del gato" {
 
-	assert.that(true)
+  test "El gato aparece en su posicion determinada" {
+   	menu.iniciarMenu()
+   	menu.continuar()
+   	menu.iniciarJuego()
+   	var a = game.at(1,1)
+   	assert.equals(a, napoleon.position())
+   	
+  }
 
+  test "El contador de techos inicia en 0 y aumenta con generar techos" {
+   		menu.iniciarMenu()
+   		menu.continuar()
+   		menu.iniciarJuego()
+   		var a = game.at(0,1)
+   		assert.equals(a, napoleon.position())
+    }
+    
+  test "El gato muerto se situa debajo del mapa" {
+   		menu.iniciarMenu()
+   		menu.continuar()
+   		menu.iniciarJuego()
+   		napoleon.caer()
+   		var a = game.at(0,0)
+   		a = a.down(1)
+   		assert.equals(a, napoleon.position())
+  }
+  
+  test "Una vez dado gameOver se puede reiniciar el juego"{
+	   menu.iniciarMenu()
+   	   menu.continuar()
+   	   menu.iniciarJuego()
+	   nivel.gameOver()
+	   assert.equals(true,nivel.puedeReiniciarse())
+}
+    
+}
+
+describe "Test de powerUps" {
+
+  test "El gato consume un powerUp y este se borra" {
+   	
+   	
+  }  
 }
